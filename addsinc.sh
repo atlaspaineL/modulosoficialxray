@@ -13,7 +13,14 @@ senha="$3"
 validade="$4"
 limite="$5"
 config_file="/usr/local/etc/xray/config.json"
+alt_config_file="/etc/v2ray/config.json"
 
+if [ -f "$config_file" ]; then
+    echo "Usando configuração em $config_file"
+elif [ -f "$alt_config_file" ]; then
+    echo "Usando configuração em $alt_config_file"
+    config_file="$alt_config_file"
+fi
 # Verificar se o novo ID já existe na configuração
 if grep -q "\"id\": \"$uuid\"" "$config_file"; then
     echo "2"

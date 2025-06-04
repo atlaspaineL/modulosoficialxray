@@ -23,4 +23,11 @@ with open(nome_arquivo, 'r') as arquivo:
             os.system("./atlasremove.sh " + linha)
     arquivo.close()
     os.system("rm " + nome_arquivo)
-    os.system("sudo systemctl restart xray")
+    # Verificar qual arquivo de configuração existe e usar o apropriado
+    config_file="/usr/local/etc/xray/config.json"
+    config_file_alt="/etc/v2ray/config.json"
+
+    if [ -f "$config_file" ]; then
+        os.system("sudo systemctl restart xray")
+    elif [ -f "$config_file_alt" ]; then
+        os.system("sudo systemctl restart v2ray")

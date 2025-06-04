@@ -14,9 +14,19 @@ delete_id() {
         exit 1
     }
 
-    if grep -q "$uuidel" /usr/local/etc/xray/config.json; then
+    config_file="/usr/local/etc/xray/config.json"
+    alt_config_file="/etc/v2ray/config.json"
+
+    if [ -f "$config_file" ]; then
+        echo "Usando configuração em $config_file"
+    elif [ -f "$alt_config_file" ]; then
+        echo "Usando configuração em $alt_config_file"
+        config_file="$alt_config_file"
+    fi
+
+    if grep -q "$uuidel" "$config_file"; then
         tmpfile=$(mktemp)
-        jq --arg uuid "$uuidel" 'del(.inbounds[].settings.clients[] | select(.id == $uuid))' /usr/local/etc/xray/config.json > "$tmpfile" && mv "$tmpfile" /usr/local/etc/xray/config.json && chmod 777 /usr/local/etc/xray/config.json
+        jq --arg uuid "$uuidel" 'del(.inbounds[].settings.clients[] | select(.id == $uuid))' "$config_file" > "$tmpfile" && mv "$tmpfile" "$config_file" && chmod 777 "$config_file"
 
         sudo systemctl restart xray
         echo "Objeto com 'id' igual a $uuidel removido"
