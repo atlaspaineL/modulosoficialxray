@@ -23,7 +23,4 @@ with open(nome_arquivo, 'r') as arquivo:
             os.system("./atlascreate.sh " + colunas[0] + " " + colunas[1] + " " + colunas[2] + " " + colunas[3])
     arquivo.close()
     os.system("rm " + nome_arquivo)
-    if os.path.exists("/etc/v2ray/config.json"):
-        os.system("sudo systemctl restart v2ray")
-    else:
-        os.system("sudo systemctl restart xray")
+    os.system("sudo systemctl restart xray")

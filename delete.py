@@ -27,7 +27,7 @@ with open(nome_arquivo, 'r') as arquivo:
     config_file="/usr/local/etc/xray/config.json"
     config_file_alt="/etc/v2ray/config.json"
 
-    if os.path.exists("$config_file"):
+    if os.path.exists(config_file):
         os.system("sudo systemctl restart xray")
-    elif os.path.exists("$config_file_alt"):
+    elif os.path.exists(config_file_alt):
         os.system("sudo systemctl restart v2ray")
