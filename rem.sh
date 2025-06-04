@@ -28,7 +28,11 @@ delete_id() {
         tmpfile=$(mktemp)
         jq --arg uuid "$uuidel" 'del(.inbounds[].settings.clients[] | select(.id == $uuid))' "$config_file" > "$tmpfile" && mv "$tmpfile" "$config_file" && chmod 777 "$config_file"
 
-        sudo systemctl restart xray
+        if [ -f "/etc/v2ray/config.json" ]; then
+            sudo systemctl restart v2ray
+        else
+            sudo systemctl restart xray
+        fi
         echo "Objeto com 'id' igual a $uuidel removido"
         bash atlasremove.sh "$login"
     else

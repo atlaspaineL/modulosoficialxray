@@ -31,6 +31,12 @@ else
     new_client2='{"email": "'$email@gmail.com'", "id": "'$uuid'", "level": 0}'
     jq --argjson newclient "$new_client" --argjson newclient2 "$new_client2" '(.inbounds[0].settings.clients += [$newclient]) | (.inbounds[1].settings.clients += [$newclient2])' "$config_file" > tmpfile && mv tmpfile "$config_file" && chmod 777 "$config_file"
     echo "1"
-    sudo systemctl restart xray
+
+    if [ -f "/etc/v2ray/config.json" ]; then
+        sudo systemctl restart v2ray
+    else
+        sudo systemctl restart xray
+    fi
+
     bash atlasteste.sh $email $senha $validade $limite 
 fi
